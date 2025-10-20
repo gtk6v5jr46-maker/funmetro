@@ -14,32 +14,33 @@
       height: 100%;
       width: 100%;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      display: flex;
-      flex-direction: column;
       background-color: white;
+      overflow-x: hidden;
     }
 
     /* Blue top area that extends behind and under the status bar */
     .statusbar-spacer {
       background-color: #4A7AA6;
-      height: calc(env(safe-area-inset-top) + 200px); /* extends more below the notch */
+      height: 200px; /* visible height */
+      padding-top: env(safe-area-inset-top); /* safe area for modern iPhones */
       width: 100%;
     }
 
+    /* Main content scrolls naturally between blue top and fixed footer */
     .content {
-      flex: 1;
+      min-height: calc(100vh - 120px); /* fill remaining space above footer */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       text-align: center;
       background-color: white;
-      padding-bottom: env(safe-area-inset-bottom);
+      padding-bottom: 120px; /* reserve space so text isn't hidden behind footer */
     }
 
-    /* Make first image overlap slightly into blue area for a smooth blend */
+    /* Header image overlaps slightly into blue area */
     .header-img {
-      margin-top: -60px; /* pulls image upward into blue zone */
+      margin-top: -60px;
       width: 100%;
       height: auto;
       display: block;
@@ -80,9 +81,13 @@
       50% { opacity: 0; }
     }
 
+    /* Footer image fixed to the bottom */
     .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
       width: 100%;
-      margin-top: auto; /* ensures it stays at bottom */
+      z-index: 10;
     }
   </style>
 </head>
