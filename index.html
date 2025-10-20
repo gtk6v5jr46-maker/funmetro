@@ -19,14 +19,13 @@
       background-color: white;
     }
 
-    /* top bar behind the clock */
+    /* Blue top area that extends behind and under the status bar */
     .statusbar-spacer {
       background-color: #4A7AA6;
-      height: calc(env(safe-area-inset-top) + 40px);
+      height: calc(env(safe-area-inset-top) + 80px); /* extends more below the notch */
       width: 100%;
     }
 
-    /* main content grows between top + bottom */
     .content {
       flex: 1;
       display: flex;
@@ -34,7 +33,16 @@
       align-items: center;
       justify-content: flex-start;
       text-align: center;
+      background-color: white;
       padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Make first image overlap slightly into blue area for a smooth blend */
+    .header-img {
+      margin-top: -60px; /* pulls image upward into blue zone */
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     img {
@@ -72,9 +80,9 @@
       50% { opacity: 0; }
     }
 
-    /* footer image pinned at bottom */
     .footer {
       width: 100%;
+      margin-top: auto; /* ensures it stays at bottom */
     }
   </style>
 </head>
@@ -82,7 +90,7 @@
   <div class="statusbar-spacer"></div>
 
   <div class="content">
-    <img src="A.jpg" alt="Header" />
+    <img src="A.jpg" alt="Header" class="header-img" />
     <img src="B.GIF" alt="Ticket Icon" />
 
     <table>
