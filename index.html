@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Fun Metro</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+    }
+
+    /* top bar behind the clock */
+    .statusbar-spacer {
+      background-color: #4A7AA6;
+      height: calc(env(safe-area-inset-top) + 40px);
+      width: 100%;
+    }
+
+    /* main content grows between top + bottom */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    table {
+      margin: 14px auto;
+      font-size: 1.2rem;
+      width: 95%;
+    }
+
+    td {
+      padding: 2px 2px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    td:last-child {
+      text-align: right;
+      color: #367CA8;
+      font-weight: 800;
+    }
+
+    .countdown {
+      font-size: 1.5rem;
+      color: red;
+      font-weight: bold;
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* footer image pinned at bottom */
+    .footer {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="statusbar-spacer"></div>
+
+  <div class="content">
+    <img src="A.jpg" alt="Header" />
+    <img src="B.GIF" alt="Ticket Icon" />
+
+    <table>
+      <tr><td>Price</td><td>$1.50</td></tr>
+      <tr><td>Current Date</td><td id="current-date"></td></tr>
+      <tr><td>Current Time</td><td id="current-time"></td></tr>
+      <tr><td>Expiry Date</td><td id="expiry-date"></td></tr>
+      <tr><td>Expiry Time</td><td id="expiry-time"></td></tr>
+    </table>
+
+    <div class="countdown" id="countdown">Loading...</div>
+  </div>
+
+  <img class="footer" src="D.jpg" alt="Footer" />
+
+  <script>
+    function pad(n) { return n.toString().padStart(2, '0'); }
+
+    function formatDateTime(date) {
+      const mm = pad(date.getMonth() + 1);
+      const dd = pad(date.getDate());
+      const yyyy = date.getFullYear();
+      const hh = date.getHours() % 12 || 12;
+      const mi = pad(date.getMinutes());
+      const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+      return { date: `${mm}/${dd}/${yyyy}`, time: `${pad(hh)}:${mi} ${ampm}` };
+    }
+
+    function updateTimes() {
+      const now = new Date();
+      const expiry = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+
+      const nowFormatted = formatDateTime(now);
+      const expiryFormatted = formatDateTime(expiry);
+
+      document.getElementById("current-date").innerText = nowFormatted.date;
+      document.getElementById("current-time").innerText = nowFormatted.time;
+      document.getElementById("expiry-date").innerText = expiryFormatted.date;
+      document.getElementById("expiry-time").innerText = expiryFormatted.time;
+
+      function updateCountdown() {
+        const now = new Date();
+        let diff = expiry - now;
+        if (diff < 0) diff = 0;
+
+        const hrs = pad(Math.floor(diff / (1000 * 60 * 60)));
+        const mins = pad(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
+        const secs = pad(Math.floor((diff % (1000 * 60)) / 1000));
+        document.getElementById("countdown").innerText = `${hrs}:${mins}:${secs}`;
+      }
+
+      updateCountdown();
+      setInterval(() => {
+        const now = new Date();
+        const nowFormatted = formatDateTime(now);
+        document.getElementById("current-time").innerText = nowFormatted.time;
+      }, 1000);
+      setInterval(updateCountdown, 1000);
+    }
+
+    updateTimes();
+  </script>
+</body>
+</html>
