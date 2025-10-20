@@ -81,14 +81,19 @@
     @keyframes blink {
       50% { opacity: 0; }
     }
-
-    /* Footer image sits near bottom but scales nicely */
     .footer {
-      width: 100%;
-      height: auto;
-      margin-top: auto;
-      margin-bottom: env(safe-area-inset-bottom);
-      max-height: 25vh; /* scales with screen */
+     position: relative;
+     width: 100%;
+     height: auto;
+     margin-top: auto;
+
+  /* Balance footer spacing visually with the iPhone safe area */
+  padding-bottom: calc(env(safe-area-inset-bottom) / 2 + 8px);
+
+  /* Keeps image nicely visible but never too high */
+  transform: translateY(-4px);
+
+  max-height: 25vh; /* scales with screen */
     }
   </style>
 </head>
