@@ -15,38 +15,39 @@
       width: 100%;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: white;
-      overflow-x: hidden;
+      overflow: hidden; /* prevents scrolling */
+      position: relative;
     }
 
-    /* Blue top area that extends behind and under the status bar */
+    /* Blue area behind and below the status bar */
     .statusbar-spacer {
       background-color: #4A7AA6;
-      height: 200px; /* visible height */
-      padding-top: env(safe-area-inset-top); /* safe area for modern iPhones */
+      height: 200px;
+      padding-top: env(safe-area-inset-top);
       width: 100%;
     }
 
-    /* Main content scrolls naturally between blue top and fixed footer */
+    /* All content between top and bottom */
     .content {
-      min-height: calc(100vh - 120px); /* fill remaining space above footer */
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       text-align: center;
       background-color: white;
-      padding-bottom: 120px; /* reserve space so text isn't hidden behind footer */
+      padding-top: calc(env(safe-area-inset-top) + 200px);
+      padding-bottom: calc(env(safe-area-inset-bottom) + 120px);
+      box-sizing: border-box;
     }
 
-    /* Header image overlaps slightly into blue area */
+    /* Header overlaps slightly into blue area */
     .header-img {
       margin-top: -60px;
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    img {
       width: 100%;
       height: auto;
       display: block;
@@ -81,13 +82,15 @@
       50% { opacity: 0; }
     }
 
-    /* Footer image fixed to the bottom */
+    /* Footer image pinned exactly to the bottom */
     .footer {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
+      height: auto;
       z-index: 10;
+      padding-bottom: env(safe-area-inset-bottom);
     }
   </style>
 </head>
